@@ -1,8 +1,8 @@
 #include <SoftwareSerial.h>
 
 SoftwareSerial mySerial(10, 11); // RX, TX
-int outPutPin = 6;
-int inputPin = 244;
+int outPutPin = 8;
+int inputPin;
 int control = 13;
 int charCounter = 0;
 char receivedChar = ' ';
@@ -10,7 +10,6 @@ char charArray[20];
 
 void setup() {
     pinMode(outPutPin, OUTPUT);
-    pinMode(inputPin, INPUT);
     pinMode(control, OUTPUT);
     digitalWrite(control, HIGH);
     
@@ -69,6 +68,10 @@ void parseMessage(char *message) {
     int command = atoi(messageBuffer[0]);
     int pin = atoi(messageBuffer[1]);
     int value = atoi(messageBuffer[2]);
+
+    if (command == 2) {
+        setAnalogPinValue(pin, value);     
+    }
 }
 
 void emptyReceivedMessage(char *message) {
